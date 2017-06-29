@@ -49,6 +49,7 @@
         ga('ecommerce:send');
     {% endif %}
 </script>
+{% if config("GoogleAnalytics.use") %}
 <!-- AdWords -->
 <!-- Google Code for Bestellungen Conversion Page -->
 <script type="text/javascript">
@@ -72,3 +73,4 @@ alt="" src="//www.googleadservices.com/pagead/conversion/{{ config("GoogleAnalyt
 </div>
 </noscript>
 <!-- Adwords -->
+{% endif %}

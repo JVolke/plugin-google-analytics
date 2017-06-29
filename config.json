@@ -15,6 +15,13 @@
     },
     {
         "tab"       : "AdWords Tracking",
+        "key"       : "use",
+        "label"     : "Activate",
+        "type"      : "checkbox",
+        "default"   : "false"
+    },
+    {
+        "tab"       : "AdWords Tracking",
         "key"       : "conversion_id",
         "label"     : "google_conversion_id",
         "type"      : "text",
@@ -47,5 +54,5 @@
         "label"     : "Affilie ID",
         "type"      : "text",
         "default"   : ""
-    }   
+    }
 ]
