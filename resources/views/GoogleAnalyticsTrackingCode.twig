@@ -64,13 +64,15 @@ var google_conversion_currency = "EUR";
 var google_remarketing_only = false;
 /* ]]> */
 </script>
-<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
-</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
+
+{% block PageBody %}
 <noscript>
 <div style="display:inline;">
 <img height="1" width="1" style="border-style:none;"
 alt="" src="//www.googleadservices.com/pagead/conversion/{{ config("GoogleAnalytics.conversion_id") }}/?value={{ data.order.amounts[0].netTotal }}&amp;currency_code=EUR&amp;label={{ config("GoogleAnalytics.conversion_label") }}&amp;guid=ON&amp;script=0"/>
 </div>
 </noscript>
+{% endblock %}
 <!-- Adwords -->
 {% endif %}
