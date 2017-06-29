@@ -34,7 +34,6 @@
                     {% set shippingCosts = shippingCosts + item.amounts[0].priceNet %}
                 {% endif %}
             {% endif %}
-
         {% endfor %}
 
         ga('ecommerce:addTransaction', {
