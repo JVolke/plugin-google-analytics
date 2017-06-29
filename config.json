@@ -1,6 +1,13 @@
 [
     {
         "tab"       : "Settings",
+        "key"       : "activate",
+        "label"     : "Google Analytics",
+        "type"      : "checkbox",
+        "default"   : ""
+    },
+    {
+        "tab"       : "Settings",
         "key"       : "trackingId",
         "label"     : "Google Analytics Tracking-ID",
         "type"      : "text",
