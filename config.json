@@ -22,7 +22,7 @@
     },
     {
         "tab"       : "AdWords Tracking",
-        "key"       : "use",
+        "key"       : "adwords_use",
         "label"     : "Activate",
         "type"      : "checkbox",
         "default"   : "false"
@@ -50,6 +50,13 @@
     },
     {
         "tab"       : "Affili.net Tracking",
+        "key"       : "affili_active",
+        "label"     : "rate_number",
+        "type"      : "checkbox",
+        "default"   : ""
+    },
+    {
+        "tab"       : "Affili.net Tracking",
         "key"       : "rateNumber",
         "label"     : "rate_number",
         "type"      : "text",
@@ -57,8 +64,8 @@
     },
     {
         "tab"       : "Affili.net Tracking",
-        "key"       : "id",
-        "label"     : "Affilie ID",
+        "key"       : "affili_id",
+        "label"     : "Affili ID",
         "type"      : "text",
         "default"   : ""
     }
