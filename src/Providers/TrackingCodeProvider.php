@@ -15,7 +15,6 @@ class TrackingCodeProvider
 {
     public function call( Twig $twig )
     {
-
         return $twig->render('GoogleAnalytics::GoogleAnalyticsTrackingCode');
     }
 }
