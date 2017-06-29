@@ -12,5 +12,40 @@
         "label"     : "Send gross prices to google analytics",
         "type"      : "checkbox",
         "default"   : "true"
-    }
+    },
+    {
+        "tab"       : "AdWords Tracking",
+        "key"       : "conversion_id",
+        "label"     : "google_conversion_id",
+        "type"      : "text",
+        "default"   : ""
+    },
+    {
+        "tab"       : "AdWords Tracking",
+        "key"       : "conversion_language",
+        "label"     : "google_conversion_language",
+        "type"      : "text",
+        "default"   : "en"
+    },
+    {
+        "tab"       : "AdWords Tracking",
+        "key"       : "conversion_label",
+        "label"     : "google_conversion_label",
+        "type"      : "text",
+        "default"   : ""
+    },
+    {
+        "tab"       : "Affili.net Tracking",
+        "key"       : "rateNumber",
+        "label"     : "rate_number",
+        "type"      : "text",
+        "default"   : "1"
+    },
+    {
+        "tab"       : "Affili.net Tracking",
+        "key"       : "id",
+        "label"     : "Affilie ID",
+        "type"      : "text",
+        "default"   : ""
+    }   
 ]
