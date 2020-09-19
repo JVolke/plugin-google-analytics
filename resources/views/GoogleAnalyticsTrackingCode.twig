@@ -1,117 +1,76 @@
-{% if config("GoogleAnalytics.activate") == "true" %}
-<script>
+<script type="text/plain" data-cookie-consent="{{ config('GoogleAnalytics.consentGroup') }}.googleAnalytics">
+    {% set anonymizeIP = config("GoogleAnalytics.anonymizeIPs") == "true" %}
+
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
     ga('create', '{{ config("GoogleAnalytics.trackingId") }}', 'auto');
-    ga('set', 'anonymizeIp', true);
     ga('require', 'ecommerce');
+
+    {% if anonymizeIP  %}
+        ga('set', 'anonymizeIp', true);
+    {% endif %}
+
     ga('send', 'pageview');
 
     {% set shippingCosts = 0 %}
     {% set webstoreConfig = services.webstoreConfig.getWebstoreConfig() %}
     {% set useGross = config("GoogleAnalytics.submitGrossPrices") == "true" %}
-
-    {% if services.template.getCurrentTemplate() == 'tpl.confirmation' %}
+    
+    {% if trackOrder %}
         {% set data = services.customer.getLatestOrder() %}
+        {% if data is defined %}
+            {# Calculate shipping costs #}
+            {% for item in data.order.orderItems %}
 
-        {% for item in data.order.orderItems %}
-            {% if item.typeId == 1 %}
-                ga('ecommerce:addItem', {
-                    'id'        : '{{ data.order.id }}',
-                    'name'      : '{{ item.orderItemName }}',
-                    'sku'       : '{{ item.variation.number }}',
-                    'price'     : '{% if useGross %}{{ item.amounts[0].priceGross }}{% else %}{{ item.amounts[0].priceNet }}{% endif %}',
-                    'quantity'  : '{{ item.quantity }}',
-                    'currency'  : '{{ item.amounts[0].currency }}'
-                });
-            {% endif %}
-
-            {% if item.typeId == 6 %}
-                {% if useGross %}
-                    {% set shippingCosts = shippingCosts + item.amounts[0].priceGross %}
-                {% else %}
-                    {% set shippingCosts = shippingCosts + item.amounts[0].priceNet %}
+                {% if item.typeId == 6 %}
+                    {% if useGross %}
+                        {% set shippingCosts = shippingCosts + item.amounts[0].priceGross %}
+                    {% else %}
+                        {% set shippingCosts = shippingCosts + item.amounts[0].priceNet %}
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-        {% endfor %}
 
-        ga('ecommerce:addTransaction', {
-            'id'            : '{{ data.order.id }}',
-            'affiliation'   : '{{ webstoreConfig.name }}',
-            'revenue'       : '{% if useGross %}{{ data.order.amounts[0].grossTotal }}{% else %}{{ data.order.amounts[0].netTotal }}{% endif %}',
-            'shipping'      : '{{ shippingCosts }}',
-            'tax'           : '{{ data.order.amounts[0].vatTotal }}',
-            'currency'      : '{{ data.order.amounts[0].currency }}'
-        });
+            {% endfor %}
 
-        ga('ecommerce:send');
+            {# Add transaction #}
+            ga('ecommerce:addTransaction', {
+                'id'            : '{{ data.order.id }}',
+                'affiliation'   : '{{ webstoreConfig.name }}',
+                'revenue'       : '{% if useGross %}{{ data.order.amounts[0].grossTotal }}{% else %}{{ data.order.amounts[0].netTotal }}{% endif %}',
+                'shipping'      : '{{ shippingCosts }}',
+                'tax'           : '{{ data.order.amounts[0].vatTotal }}',
+                'currency'      : '{{ data.order.amounts[0].currency }}'
+            });
+
+            {# Add items to transaction #}
+            {% for item in data.order.orderItems %}
+                {% if item.typeId == 1 %}
+                    ga('ecommerce:addItem', {
+                        'id'        : '{{ data.order.id }}',
+                        'name'      : '{{ item.orderItemName }}',
+                        'sku'       : '{{ item.variation.number }}',
+                        'price'     : '{% if useGross %}{{ item.amounts[0].priceGross }}{% else %}{{ item.amounts[0].priceNet }}{% endif %}',
+                        'quantity'  : '{{ item.quantity }}',
+                        'currency'  : '{{ item.amounts[0].currency }}'
+                    });
+                {% endif %}
+
+                {% if item.typeId == 6 %}
+                    {% if useGross %}
+                        {% set shippingCosts = shippingCosts + item.amounts[0].priceGross %}
+                    {% else %}
+                        {% set shippingCosts = shippingCosts + item.amounts[0].priceNet %}
+                    {% endif %}
+                {% endif %}
+
+            {% endfor %}
+
+
+
+            ga('ecommerce:send');
+        {% endif %}
     {% endif %}
 </script>
-{% endif %}
-
-{# This will we need only on the Order Confirmation page #}
-{% if services.template.getCurrentTemplate() == 'tpl.confirmation' %}
-    {% if config("GoogleAnalytics.adwords_use") == "true" %}
-      <!-- AdWords -->
-      <!-- Google Code for Bestellungen Conversion Page -->
-      <script type="text/javascript">
-      /* <![CDATA[ */
-      var google_conversion_id = {{ config("GoogleAnalytics.conversion_id") }};
-      var google_conversion_language = "{{ config("GoogleAnalytics.conversion_language") }}";
-      var google_conversion_format = "3";
-      var google_conversion_color = "ffffff";
-      var google_conversion_label = "{{ config("GoogleAnalytics.conversion_label") }}";
-      var google_conversion_value = {{ data.order.amounts[0].netTotal }};
-      var google_conversion_currency = "EUR";
-      var google_remarketing_only = false;
-      /* ]]> */
-      </script>
-      <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
-
-      <noscript>
-        <div style="display:inline;">
-        <img height="1" width="1" style="border-style:none;"
-        alt="" src="//www.googleadservices.com/pagead/conversion/{{ config("GoogleAnalytics.conversion_id") }}/?value={{ data.order.amounts[0].netTotal }}&amp;currency_code=EUR&amp;label={{ config("GoogleAnalytics.conversion_label") }}&amp;guid=ON&amp;script=0"/>
-        </div>
-      </noscript>
-      <!-- Adwords -->
-    {% endif %}
-
-    {% if config("GoogleAnalytics.affili_active") == "true"  %}
-      <!-- Affilinet -->
-      <script>
-        (function (w, d, namespace, domain, progId, tagId, undefined) {
-        w[namespace] = w[namespace] || {}; var act = w[namespace], payload = [];
-        act.tags = act.tags || []; act.tags.push(tagId, payload);
-        var protocol = d.location.protocol;
-        // Start editable part
-        payload.push({
-        module: 'OrderTracking',
-        event: 'Sale',
-        net_price: {{ data.order.amounts[0].netTotal }},
-        order_id: '{{ data.order.id }}',
-        rate_number: {{ config("GoogleAnalytics.rateNumber")}}
-        });
-        // End editable part
-        if (act.get === undefined) {
-        var s = d.createElement('script');
-        s.type = 'text/javascript';
-        s.src = protocol + '//' + domain + '/' + 'affadvc.aspx?ns=' + namespace +
-        '&dm=' + domain + '&site=' + progId + '&tag=' + tagId;
-        s.async = false; // always keep false for standard tracking
-        (d.getElementsByTagName('body')[0] || d.getElementsByTagName('head')[0]).appendChild(s);
-        } else { act.get(w, d, progId, tagId); }
-        })(window, document,
-        // Start editable part
-        'aff_act_1.0', 'act.webmasterplan.com', {{ config("GoogleAnalytics.affili_id")}}, 'TAG-ID-1');
-        // End editable part
-        </script>
-      <noscript>
-      <img src="https://partners.webmasterplan.com/TrackOrder.aspx?site={{ config("GoogleAnalytics.affili_id")}}&event=sale&net_price={{ data.order.amounts[0].netTotal }}&order_id={{ data.order.id }}&rate_number={{ config("GoogleAnalytics.rateNumber")}}"/>
-      </noscript>
-      <!-- Affilinet -->
-      {% endif %}
-{% endif %}

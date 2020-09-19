@@ -1,72 +1,81 @@
-[
-    {
-        "tab"       : "Settings",
-        "key"       : "activate",
-        "label"     : "Google Analytics",
-        "type"      : "checkbox",
-        "default"   : ""
+{
+  "formatVersion": 1,
+  "menu": {
+    "Config.SettingsTab": {
+      "label": "Config.SettingsTab",
+      "formFields": {
+        "trackingId": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.trackingIdLabel",
+          "options": {
+            "defaultValue": ""
+          }
+        },
+        "submitGrossPrices": {
+          "type": "checkBox",
+          "required": false,
+          "label": "Config.submitGrossPricesLabel",
+          "options": {
+            "defaultValue": "true"
+          }
+        },
+        "anonymizeIPs": {
+          "type": "checkBox",
+          "required": false,
+          "label": "Config.anonymizeIPsLabel",
+          "options": {
+            "defaultValue": "true"
+          }
+        }
+      }
     },
-    {
-        "tab"       : "Settings",
-        "key"       : "trackingId",
-        "label"     : "Google Analytics Tracking-ID",
-        "type"      : "text",
-        "default"   : ""
-    },
-    {
-        "tab"       : "Settings",
-        "key"       : "submitGrossPrices",
-        "label"     : "Send gross prices to google analytics",
-        "type"      : "checkbox",
-        "default"   : "true"
-    },
-    {
-        "tab"       : "AdWords Tracking",
-        "key"       : "adwords_use",
-        "label"     : "Activate",
-        "type"      : "checkbox",
-        "default"   : "false"
-    },
-    {
-        "tab"       : "AdWords Tracking",
-        "key"       : "conversion_id",
-        "label"     : "google_conversion_id",
-        "type"      : "text",
-        "default"   : ""
-    },
-    {
-        "tab"       : "AdWords Tracking",
-        "key"       : "conversion_language",
-        "label"     : "google_conversion_language",
-        "type"      : "text",
-        "default"   : "en"
-    },
-    {
-        "tab"       : "AdWords Tracking",
-        "key"       : "conversion_label",
-        "label"     : "google_conversion_label",
-        "type"      : "text",
-        "default"   : ""
-    },
-    {
-        "tab"       : "Affili.net Tracking",
-        "key"       : "affili_active",
-        "label"     : "rate_number",
-        "type"      : "checkbox",
-        "default"   : ""
-    },
-    {
-        "tab"       : "Affili.net Tracking",
-        "key"       : "rateNumber",
-        "label"     : "rate_number",
-        "type"      : "text",
-        "default"   : "1"
-    },
-    {
-        "tab"       : "Affili.net Tracking",
-        "key"       : "affili_id",
-        "label"     : "Affili ID",
-        "type"      : "text",
-        "default"   : ""
+    "Config.CookiesTab": {
+      "label": "Config.CookiesTab",
+      "formFields": {
+        "consentGroup": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.consentGroupLabel",
+          "options": {
+            "defaultValue": "tracking",
+            "selectBoxValues": [
+              {
+                "value": "necessary",
+                "caption": "Config.consentGroupNecessary"
+              },
+              {
+                "value": "tracking",
+                "caption": "Config.consentGroupTracking"
+              },
+              {
+                "value": "marketing",
+                "caption": "Config.consentGroupMarketing"
+              },
+              {
+                "value": "media",
+                "caption": "Config.consentGroupMedia"
+              }
+            ]
+          }
+        },
+        "consentNecessary": {
+          "type": "checkBox",
+          "required": false,
+          "label": "Config.consentNecessaryLabel",
+          "options": {
+            "defaultValue": "false"
+          }
+        },
+        "consentOptOut": {
+          "type": "checkBox",
+          "required": false,
+          "label": "Config.consentOptOutLabel",
+          "options": {
+            "defaultValue": "false"
+          }
+        }
+      }
     }
-]
+  }
+}
